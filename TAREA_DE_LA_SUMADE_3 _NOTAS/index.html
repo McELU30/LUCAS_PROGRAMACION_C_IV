@@ -1,0 +1,29 @@
+<html>
+<head>
+  <title>NOTAS DEL ALUMNO LUCAS</title>
+</head>
+<body>
+  <h1>CALCULAR PROMEDIO DE TODA LAS NOTAS</h1>
+
+  <input id="nota1"><br><br>
+  <input id="nota2"><br><br>
+  <input id="nota3"><br><br>
+
+  <button onclick="calcular()">HACER CLIP</button>
+
+  <p id="salida"></p>
+
+  <script>
+    function calcular() {
+      var a = document.getElementById("nota1").value;
+      var b = document.getElementById("nota2").value;
+      var c = document.getElementById("nota3").value;
+
+      var suma = parseFloat(a) + parseFloat(b) + parseFloat(c);
+      var promedio = suma / 3;
+
+      document.getElementById("salida").innerHTML = "Promedio: " + promedio;
+    }
+  </script>
+</body>
+</html>
