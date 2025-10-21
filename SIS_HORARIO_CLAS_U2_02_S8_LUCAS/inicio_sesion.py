@@ -2,6 +2,7 @@ import flet as ft
 from conexion import ConexionDB
 from dashboard_view import DashboardView
 
+
 class LoginView(ft.Container):
     def __init__(self, page: ft.Page, cambiar_vista=None):
         super().__init__(expand=True)
@@ -20,25 +21,27 @@ class LoginView(ft.Container):
         self.lbl_mensaje = ft.Text(value="", color="red")
 
         # Botón de ingreso
-        self.btn_ingresar = ft.ElevatedButton("Ingresar", on_click=self.login)
+        self.btn_ingresar = ft.ElevatedButton(
+            "Ingresar",
+            width=200,
+            on_click=self.login
+        )
 
-        # Contenedor del formulario centrado
+        # Diseño del formulario centrado
         self.content = ft.Column(
             [
                 ft.Text("🔐 Login del Sistema de Horarios", size=22, weight="bold"),
                 self.txt_usuario,
                 self.txt_password,
                 self.btn_ingresar,
-                self.lbl_mensaje
+                self.lbl_mensaje,
             ],
             alignment=ft.MainAxisAlignment.CENTER,
-            horizontal_alignment=ft.CrossAxisAlignment.CENTER
+            horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+            spacing=15,
         )
 
-        # Centramos todo el formulario
         self.alignment = ft.alignment.center
-        self.content.alignment = ft.MainAxisAlignment.CENTER
-        self.content.horizontal_alignment = ft.CrossAxisAlignment.CENTER
 
     # ──────────────────────────────────────────────
     # FUNCIÓN DE LOGIN
@@ -57,14 +60,16 @@ class LoginView(ft.Container):
         # Llamada al método de conexión
         datos = self.conexion.login_usuario(usuario, password)
 
-        if datos:
+        # ✅ Verifica el campo "status" del resultado
+        if datos["status"]:
             self.lbl_mensaje.value = "✅ Acceso correcto"
             self.lbl_mensaje.color = "green"
             self.update()
-            # Carga del dashboard
+
+            # Abrir Dashboard
             dashboard = DashboardView(self.page, self.cambiar_vista)
             self.cambiar_vista(dashboard)
         else:
-            self.lbl_mensaje.value = "❌ Usuario o contraseña incorrectos"
+            self.lbl_mensaje.value = f"❌ {datos['mensaje']}"
             self.lbl_mensaje.color = "red"
             self.update()
